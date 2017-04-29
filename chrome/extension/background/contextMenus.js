@@ -27,14 +27,16 @@ function popWindow(type) {
 
 chrome.contextMenus.create({
   id: CONTEXT_MENU_ID,
-  title: 'React Chrome Extension Example',
+  title: 'Thundergolfer\'s fast-links',
   contexts: ['all'],
   documentUrlPatterns: [
-    'https://github.com/*'
+    'https://github.com/*',
+    'https://reddit.com/*'
   ]
 });
 
 chrome.contextMenus.onClicked.addListener((event) => {
+  console.log("Context menu clicked.")
   if (event.menuItemId === CONTEXT_MENU_ID) {
     popWindow('open');
   }

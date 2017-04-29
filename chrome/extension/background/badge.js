@@ -1,4 +1,5 @@
 chrome.storage.local.get('todos', (obj) => {
+  console.log("Setting up badge");
   let todos = obj.todos;
   if (todos) {
     todos = JSON.parse(todos);

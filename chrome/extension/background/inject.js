@@ -12,6 +12,7 @@ function loadScript(name, tabId, cb) {
     chrome.tabs.executeScript(tabId, { file: `/js/${name}.bundle.js`, runAt: 'document_end' }, cb);
   } else {
     // dev: async fetch bundle
+    console.log("Starting to load inject script.");
     fetch(`http://localhost:3000/js/${name}.bundle.js`)
     .then(res => res.text())
     .then((fetchRes) => {
@@ -30,9 +31,15 @@ function loadScript(name, tabId, cb) {
   }
 }
 
-const arrowURLs = ['^https://github\\.com'];
+const arrowURLs = ['^https://github\\.com', '^https://reddit\\.com'];
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  // alert("Hey! chrome.tabs.onUpdated event.");
+  if (tab.url.match(arrowURLs.join('|'))) {
+    console.log('We have a match!.');
+  } else {
+    console.log('We dont have a match');
+  }
   if (changeInfo.status !== 'loading' || !tab.url.match(arrowURLs.join('|'))) return;
 
   const result = await isInjected(tabId);

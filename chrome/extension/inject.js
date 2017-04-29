@@ -40,6 +40,7 @@ class InjectApp extends Component {
 }
 
 window.addEventListener('load', () => {
+  console.log("Adding Inject component");
   const injectDOM = document.createElement('div');
   injectDOM.className = 'inject-react-example';
   injectDOM.style.textAlign = 'center';
