@@ -31,19 +31,24 @@ function loadScript(name, tabId, cb) {
   }
 }
 
-const arrowURLs = ['^https://github\\.com', '^https://reddit\\.com'];
+const arrowURLs = [/^https:\/\/www.reddit\.com/, /^https:\/\/github\.com/];
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   // alert("Hey! chrome.tabs.onUpdated event.");
-  if (tab.url.match(arrowURLs.join('|'))) {
-    console.log('We have a match!.');
+  var isMatch = arrowURLs.some(function(rx) { return rx.test(tab.url); });
+  if (isMatch) {
+    console.log('We have aaaaa match!.' + tab.url);
+    console.log(tab.url);
   } else {
-    console.log('We dont have a match');
+    console.log(tab.url);
+    console.log('We dont have a maaaatch');
   }
-  if (changeInfo.status !== 'loading' || !tab.url.match(arrowURLs.join('|'))) return;
+  if (changeInfo.status !== 'loading' || !isMatch) return;
 
   const result = await isInjected(tabId);
   if (chrome.runtime.lastError || result[0]) return;
 
   loadScript('inject', tabId, () => console.log('load inject bundle success!'));
+  loadScript('fastlinks_input', tabId, () => console.log('loaded fastlinks-input library!'));
+  loadScript('test_injector', tabId, () => console.log('loaded my new file wahey!'));
 });

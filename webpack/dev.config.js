@@ -12,6 +12,8 @@ const baseDevConfig = () => ({
   entry: {
     todoapp: [customPath, hotScript, path.join(__dirname, '../chrome/extension/todoapp')],
     background: [customPath, hotScript, path.join(__dirname, '../chrome/extension/background')],
+    test_injector: [customPath, hotScript, path.join(__dirname, '../chrome/extension/test_injector')],
+    fastlinks_input: [customPath, hotScript, path.join(__dirname, '../chrome/extension/jquery.fastlinksInput')],
   },
   devMiddleware: {
     publicPath: `http://${host}:${port}/js`,

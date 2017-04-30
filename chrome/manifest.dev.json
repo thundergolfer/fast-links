@@ -13,11 +13,19 @@
     "128": "img/icon-128.png"
   },
   "web_accessible_resources": [
-    "inject.html"
+    "inject.html", "test_injector.js"
   ],
   "background": {
     "page": "background.html"
   },
-  "permissions": [ "contextMenus", "management", "tabs", "storage", "https://github.com/*", "https://reddit.com/*", "http://localhost:3000/*", "https://localhost:3000/*" ],
+  "permissions": ["contextMenus",
+                  "management",
+                  "tabs",
+                  "storage",
+                  "https://github.com/*",
+                  "https://www.github.com/*",
+                  "https://reddit.com/*",
+                  "https://www.reddit.com/*"
+                  ],
   "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 https://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 https://localhost:3000; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:;"
 }
