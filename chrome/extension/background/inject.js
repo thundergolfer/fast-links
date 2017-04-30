@@ -31,16 +31,18 @@ function loadScript(name, tabId, cb) {
   }
 }
 
-const arrowURLs = ['^https://github\\.com', '^https://reddit\\.com'];
+
+const arrowURLs = [/^https:\/\/www.reddit\.com/, /^https:\/\/github\.com/];
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   // alert("Hey! chrome.tabs.onUpdated event.");
-  if (tab.url.match(arrowURLs.join('|'))) {
+  var isMatch = arrowURLs.some(function(rx) { return rx.test(tab.url); });
+  if (isMatch) {
     console.log('We have a match!.');
   } else {
     console.log('We dont have a match');
   }
-  if (changeInfo.status !== 'loading' || !tab.url.match(arrowURLs.join('|'))) return;
+  if (changeInfo.status !== 'loading' || !isMatch) return;
 
   const result = await isInjected(tabId);
   if (chrome.runtime.lastError || result[0]) return;

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Dock from 'react-dock';
 
+var $ = require('jquery');
+var jQuery = $;
+
 class InjectApp extends Component {
   constructor(props) {
     super(props);
@@ -46,4 +49,23 @@ window.addEventListener('load', () => {
   injectDOM.style.textAlign = 'center';
   document.body.appendChild(injectDOM);
   render(<InjectApp />, injectDOM);
+});
+
+window.addEventListener('load', () => {
+  console.log("Executing block to handle comment formsdata");
+  var buttons = document.getElementsByTagName("button");
+  for (var i = 0; i < buttons.length; i++) {
+    var button  = buttons[i];
+    if (button.getAttribute('type') === 'submit') {
+      console.log(button);
+      button.onclick = function() {
+        console.log("Pippets");
+        console.log(this);
+        var form = $(this).parent().parent().siblings().find('textarea')[0];
+        console.log(form);
+        console.log(form.value);
+        form.value = form.value + "I added this ok?";
+      }
+    }
+  }
 });
