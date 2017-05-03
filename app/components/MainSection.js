@@ -29,6 +29,22 @@ export default class MainSection extends Component {
     }
   };
 
+  authorizeUrl = () => {
+        return baseSslUrl +
+          '/api/v1/authorize?client_id=' + redditConfig.redditApp.clientId +
+          '&response_type=code' +
+          '&state=foo' +
+          '&redirect_uri=' + $window.encodeURIComponent(redditConfig.redditApp.redirectUri) +
+          '&duration=temporary' +
+          '&scope=' + redditConfig.redditApp.scope;
+  }
+
+  handleRedditAuth = () => {
+    console.log("I was called from handleRedditAuth")
+    console.log(chrome.extension.getURL('/') + 'popup.html');
+    this.props.actions.redditAuth();
+  };
+
   handleShow = (filter) => {
     this.setState({ filter });
   };
@@ -59,6 +75,7 @@ export default class MainSection extends Component {
           activeCount={activeCount}
           filter={filter}
           onClearCompleted={this.handleClearCompleted}
+          onRedditAuth={this.handleRedditAuth}
           onShow={this.handleShow}
         />
       );

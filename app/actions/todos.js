@@ -23,3 +23,8 @@ export function completeAll() {
 export function clearCompleted() {
   return { type: types.CLEAR_COMPLETED };
 }
+
+export function redditAuth() {
+  console.log("from redditAuth() fuck!");
+  return { type: types.REDDIT_AUTH };
+}

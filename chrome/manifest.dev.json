@@ -13,7 +13,8 @@
     "128": "img/icon-128.png"
   },
   "web_accessible_resources": [
-    "inject.html"
+    "inject.html",
+    "app/index.html#/oauth/*"
   ],
   "background": {
     "page": "background.html"

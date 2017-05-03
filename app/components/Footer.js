@@ -17,6 +17,7 @@ export default class Footer extends Component {
     activeCount: PropTypes.number.isRequired,
     filter: PropTypes.string.isRequired,
     onClearCompleted: PropTypes.func.isRequired,
+    onRedditAuth: PropTypes.func.isRequired,
     onShow: PropTypes.func.isRequired
   };
 
@@ -44,6 +45,24 @@ export default class Footer extends Component {
     );
   }
 
+  /*
+  WARNING!!!: You have click a bit below this button for some reason. It is difficult to click.
+  TODO: Fix this shit.
+  */
+  renderRedditAuthButton() {
+    console.log("Hey from the RReddit auth button.");
+
+    const { completedCount, onRedditAuth } = this.props;
+
+    return (
+      <button className={style.clearCompleted}
+       onClick={onRedditAuth}
+      >
+        Reddit Auth.
+      </button>
+    )
+  }
+
   renderFilterLink(filter, handler) {
     const title = FILTER_TITLES[filter];
     const { filter: selectedFilter } = this.props;
@@ -63,12 +82,14 @@ export default class Footer extends Component {
     const { completedCount, onClearCompleted } = this.props;
     if (completedCount > 0) {
       return (
-        <button
-          className={style.clearCompleted}
-          onClick={onClearCompleted}
-        >
-          Clear completed
-        </button>
+        <a>
+          <button
+            className={style.clearCompleted}
+            onClick={onClearCompleted}
+          >
+            Clear completed
+          </button>
+        </a>
       );
     }
   }
@@ -76,7 +97,7 @@ export default class Footer extends Component {
   render() {
     return (
       <footer className={style.footer}>
-        {this.renderTodoCount()}
+        {this.renderRedditAuthButton()}
         <ul className={style.filters}>
           {FILTERS.map((filter, i) =>
             <li key={filter}>
