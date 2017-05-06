@@ -12,8 +12,8 @@ Site CSS Selector Key:
 {
   color: black !important;
   text-decoration: none;
-  border-bottom: .0625em solid #D4F0FF;
-  box-shadow: 0 -.4em 0 #D4F0FF inset;
+  border-bottom: .0625em solid #b9f2ab;
+  box-shadow: 0 -.4em 0 #b9f2ab inset;
 }
 
 .md p a:hover {
