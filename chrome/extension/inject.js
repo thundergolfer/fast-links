@@ -146,14 +146,8 @@ window.addEventListener('load', () => {
   var tab_url = window.location.href;
   console.log(tab_url);
   /***************************************************************************
-
-
-
                         This broken code is mine :)
                               -Avrami
-
-
-
   ***************************************************************************/
   if (allowedURLs.reddit.test(tab_url)) {
     $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
@@ -178,7 +172,7 @@ window.addEventListener('load', () => {
     function confirmSuggestionItem(){
       var s  = $("#search_suggestions").children("ol").children(".selected");
       var t = $("textarea.listening").first();
-      t.val(t.val().replace("%" + t.prop("search_value"),"[" + (t.prop("search_value").length > 0 ? t.prop("search_value") :t.s.attr("title")) + "](" + s.attr("url") + ")" ));
+      t.val(t.val().replace("%" + t.prop("search_value"),"[" + (t.prop("search_value").length > 0 ? t.prop("search_value") :s.attr("title")) + "](" + s.attr("url") + ")" ));
       $('textarea').trigger('change');
       stopListening(t);
     }
