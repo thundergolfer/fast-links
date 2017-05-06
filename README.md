@@ -1,3 +1,10 @@
+# FB Hackathon Melbourne 2017 - Fast Linking 
+
+`put important details about the project here. Leave original information about boilerplate below.`
+
+
+------
+
 # React Chrome Extension Boilerplate
 
 [![Build Status](https://travis-ci.org/jhen0409/react-chrome-extension-boilerplate.svg?branch=master)](https://travis-ci.org/jhen0409/react-chrome-extension-boilerplate)
