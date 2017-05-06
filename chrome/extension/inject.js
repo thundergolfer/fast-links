@@ -162,7 +162,7 @@ window.addEventListener('load', () => {
         }
         
 
-        $("body").prepend("<div id='myModal' class='modal fade' tabindex='- 1' role='dialog'> <form class='form form-modal' style='margin: 10px;'> <div class='form-group'><textarea class='form-control' rows='4' cols='5' width='10px'></textarea><input id='modal-submit' class='btn btn-success' value='Confirm'/></form></div>")
+        $("body").prepend("<div id='myModal' class='modal fade' tabindex='- 1' role='dialog'> <form class='form form-modal' style='margin: 10px;'> <div class='form-group'><textarea class='form-control' rows='4' cols='5' width='10px'></textarea><input id='modal-submit' class='btn btn-success' data-dismiss='modal' value='Confirm'/></form></div>")
         $("#modal-submit").click(doSubmitFastLinks);
     } else if (allowedURLs.facebook.test(tab_url)) {
         console.log("We're on Facebook.")
