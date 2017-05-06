@@ -18,6 +18,18 @@
   "background": {
     "page": "background.html"
   },
-  "permissions": [ "contextMenus", "management", "tabs", "storage", "https://github.com/*", "https://reddit.com/*", "http://localhost:3000/*", "https://localhost:3000/*" ],
+  "permissions": ["contextMenus",
+                  "management",
+                  "tabs",
+                  "storage",
+                  "https://github.com/*",
+                  "https://reddit.com/*",
+                  "*://*.facebook.com/*",
+                  "http://localhost:3000/*",
+                  "https://localhost:3000/*",
+                  "<all_urls>",
+                  "webRequest",
+                  "webRequestBlocking"
+                  ],
   "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 https://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 https://localhost:3000; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:;"
 }
