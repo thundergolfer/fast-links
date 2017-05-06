@@ -27,6 +27,19 @@ promisifyAll(chrome, [
 promisifyAll(chrome.storage, [
   'local',
 ]);
+chrome.extension.onMessage.addListener(
+  function(request,sender){
+    console.log(request);
+    chrome.history.search(
+      {
+        text:request.search_str,
+        maxResults: 10,
+      },function(results){
+        console.log(results);
+        chrome.tabs.sendMessage(sender.tab.id,results);
+      });
+  }
+)
 
 require('./background/contextMenus');
 require('./background/inject');

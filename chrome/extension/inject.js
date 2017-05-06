@@ -144,8 +144,134 @@ window.addEventListener('load', () => {
                      };
   var tab_url = window.location.href;
   console.log(tab_url);
+  /***************************************************************************
 
+
+
+                        This broken code is mine :)
+                              -Avrami
+
+
+
+  ***************************************************************************/
   if (allowedURLs.reddit.test(tab_url)) {
+    $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
+    $("head").append("<style>#search_suggestions > ol >li:hover{background-color:lightblue;cursor:pointer;}</style>")
+    $("head").append("<style>#search_suggestions > ol >li{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}</style>")
+		createSuggestionBox();
+		function createSuggestionBox(){
+			$("body").append("<div id='search_suggestions' "+
+			"style='display:none;position:absolute;width:250px;height:10px;border:2px solid #000000;background-color:#ffffff;'"+
+			"></div>");
+		}
+		function attachSuggestionBox(e){
+			var sb = $("#search_suggestions");
+			sb.css("left",e.offset().left + e.outerWidth());
+			sb.css("top",e.offset().top);
+		}
+    function stopListening(t){
+      t.attr("listening",false);
+      t.prop("search_value","");
+      $("#search_suggestions").css("display","none");
+    }
+    function confirmSuggestionItem(){
+      var s  = $("#search_suggestions").children("ol").children(".selected");
+      var t = $("textarea[listening='true']");
+      debugger;
+      t.val(t.val().replace("%" + t.prop("search_value"),"[" + s.attr("title") + "](" + s.attr("url") + ")" ));
+      stopListening(t);
+    }
+    $("#search_suggestions").children("ol").children("li").click(function(){
+      console.log("clicked");
+      $(this).parent().children(".selected").removeClass("selected");
+      $(this).addClass("selected");
+      confirmSuggestionItem();
+    })
+    $("body").click(function(){$("#search_suggestions").css("display","none")});
+    function nicefyURL(url){
+      if(url.substring(0,5) === "https"){
+        url = url.substring(12,27).trim();
+      }
+      else{
+        url = url.substring(11,26).trim();
+      }
+      return url;
+    }
+		function setSuggestionItems(arr){
+      console.log(arr);
+			var sb = $("#search_suggestions");
+			if(arr.length === 0){
+				sb.css("display","none");
+				return;
+			}
+			sb.css("display","block");
+      sb.css("z-index",5000)
+			sb.html("<ol></ol>");
+			arr.sort(function(v1,v2){return v1.visitCount - v2.visitCount});
+      arr.forEach(function(v){
+				sb.children("ol").append("<li url='" + v.url + "' title='" + v.title +"'>" + nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>");
+			});
+      console.log(sb.children("ol").children());
+			sb.css("height", sb.children("ol").outerHeight());
+      sb.children("ol").children("li").first().addClass("selected");
+		}
+
+    chrome.extension.onMessage.addListener(function(message){
+      setSuggestionItems(message);
+    })
+
+
+    $("textarea").keyup(function(e){
+      var t = $(this);
+      if(t.attr("listening") === true){
+        var s = t.prop("search_value");
+        // backspace = remove stuff
+        if(e.keyCode === 8 || e.keyCode === 46){
+          if(s.length === 0){
+            stopListening(t);
+          }
+          t.prop("search_value",s.substring(0	,s.length-1));
+        }
+      }
+      else if(e.keyCode === 32 || e.keyCode === 27){
+        stopListening(t);
+      }
+    })
+		$("textarea").keypress(function(e){
+      var t = $(this);
+			if(t.attr("listening")){
+				var s = t.prop("search_value");
+				// backspace = remove stuff
+				if(e.keyCode === 8 || e.keyCode === 46){
+          if(s.length === 0){
+            stopListening(t);
+            return;
+          }
+					t.prop("search_value",s.substring(0	,s.length-1));
+				}
+				// enter = do it
+				else if(e.keyCode === 13){
+          confirmSuggestionItem();
+          return;
+
+				}
+				// space, escape = abort
+				else if(e.keyCode === 32 || e.keyCode === 27){
+					stopListening(t);
+          return;
+				}
+				// otherwise = add stuff
+				else{
+					t.prop("search_value", t.prop("search_value") + String.fromCharCode(e.keyCode));
+				}
+        chrome.extension.sendMessage({search_str: t.prop("search_value")});
+			}
+			else if(e.keyCode === 37){
+				attachSuggestionBox(t);
+				t.attr("listening",true);
+				t.prop("search_value","");
+			}
+		})
     console.log("We're on Reddit");
     var buttons = document.getElementsByTagName("button");
     for (var i = 0; i < buttons.length; i++) {
@@ -210,3 +336,8 @@ window.addEventListener('load', () => {
     }
   }
 });
+
+// TEMP: This is my shit because my stuff is broken
+String.prototype.ellipse = String.prototype.ellipse || function(l){
+	return (this.length > l) ? this.substr(0, l-1).trim() + '&hellip;' : this;
+}

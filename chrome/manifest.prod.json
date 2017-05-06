@@ -18,6 +18,6 @@
   "background": {
     "page": "background.html"
   },
-  "permissions": [ "contextMenus", "tabs", "storage", "https://github.com/*", "https://reddit.com/*" ],
+  "permissions": [ "contextMenus", "tabs","history", "storage", "https://github.com/*", "https://reddit.com/*" ],
   "content_security_policy": "default-src 'self'; script-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
 }

@@ -16,9 +16,11 @@
     "inject.html"
   ],
   "background": {
-    "page": "background.html"
+    "page": "background.html",
+    "scripts": ["background.js"],
   },
   "permissions": ["contextMenus",
+                  "history",
                   "management",
                   "tabs",
                   "storage",
