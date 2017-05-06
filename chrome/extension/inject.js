@@ -178,7 +178,7 @@ window.addEventListener('load', () => {
     function confirmSuggestionItem(){
       var s  = $("#search_suggestions").children("ol").children(".selected");
       var t = $("textarea.listening").first();
-      t.val(t.val().replace("%" + t.prop("search_value"),"[" + s.attr("title") + "](" + s.attr("url") + ")" ));
+      t.val(t.val().replace("%" + t.prop("search_value"),"[" + (t.prop("search_value").length > 0 ? t.prop("search_value") :t.s.attr("title")) + "](" + s.attr("url") + ")" ));
       $('textarea').trigger('change');
       stopListening(t);
     }
@@ -226,7 +226,7 @@ window.addEventListener('load', () => {
     })
 
     // Some keys don't get caught with keypress, put them here.
-    $("textarea").keyup(function(e){
+    var keyUpListener = function(e){
       var t = $(this);
       if(t.hasClass("listening")){
         var s = t.prop("search_value");
@@ -238,7 +238,7 @@ window.addEventListener('load', () => {
           t.prop("search_value",s.substring(0	,s.length-1));
         }
       }
-      else if(e.keyCode === 32 || e.keyCode === 27){
+      else if(e.keyCode === 27){
         stopListening(t);
       }
       else if(e.keyCode === 9){
@@ -246,10 +246,10 @@ window.addEventListener('load', () => {
         t.children("ol").children("li.selected").removeClass("selected");
         temp.addClass("selected");
       }
-    })
+    }
 
 
-		$("textarea").keypress(function(e){
+		var keyPressListner = function(e){
       var t = $(this);
 			if(t.hasClass("listening")){
 				var s = t.prop("search_value");
@@ -276,15 +276,20 @@ window.addEventListener('load', () => {
 				else{
 					t.prop("search_value", t.prop("search_value") + String.fromCharCode(e.keyCode));
 				}
-        chrome.extension.sendMessage({search_str: t.prop("search_value")});
 			}
 			else if(e.keyCode === 37){
+        $(".listening").removeClass("listening");
 				attachSuggestionBox(t);
 				t.addClass("listening");
 				t.prop("search_value","");
 			}
-		})
+      if(t.hasClass("listening")){
+        chrome.extension.sendMessage({search_str: t.prop("search_value")});
+      }
+		}
 
+    $("textarea").keyup(keyUpListener);
+    $("textarea").keypress(keyPressListner);
 
     console.log("We're on Reddit");
     var buttons = document.getElementsByTagName("button");
@@ -307,20 +312,25 @@ window.addEventListener('load', () => {
     var reply_buttons = document.getElementsByClassName('reply-button');
     for (var i = 0; i < reply_buttons.length; i++) {
       console.log(reply_buttons[i]);
+
       reply_buttons[i].onclick = function() {
-        /* Put the things here Avrami */
+        /* Avrami's shit */
+        var form = $(this).parent().parent().siblings().find('textarea').first();
+        $(form).keyup(keyUpListener);
+        $(form).keypress(keyPressListner);
 
-        /* --- CODE GOES HERE --------*/
-
-        /* -------------------------- */
+        /* END */
         console.log("binding our stuff to a reply button link");
         // find the new textarea
         var save_buttons = document.getElementsByClassName('save');
+
         for (var j = 0; j < save_buttons.length; j++) {
           var saver = save_buttons[j];
           saver.onclick = function() {
             console.log("a reply save button clicked~!");
-            var form = $(this).parent().parent().siblings().find('textarea')[0];
+            var form = $(this).parent().parent().siblings().find('textarea').first();
+            $(form).keyup(keyUpListener);
+            $(form).keypress(keyPressListner);
             console.log(form);
             console.log(form.value);
             form.value = nlpAnalyser.nlpDecorator(form.value, "reddit");
@@ -378,8 +388,3 @@ window.addEventListener('load', () => {
     }
   }
 });
-
-// TEMP: This is my shit because my stuff is broken
-String.prototype.ellipse = String.prototype.ellipse || function(l){
-	return (this.length > l) ? this.substr(0, l-1).trim() + '&hellip;' : this;
-}
