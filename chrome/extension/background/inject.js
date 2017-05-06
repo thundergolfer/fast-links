@@ -50,4 +50,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (chrome.runtime.lastError || result[0]) return;
 
   loadScript('inject', tabId, () => console.log('load inject bundle success!'));
+  loadScript('util', tabId, () => console.log('load the util!'));
+  loadScript('regexp_tokenizer', tabId, () => console.log('load the regexp tokenizer library!'));
+  loadScript('natural', tabId, () => console.log('load the natural.js library!'));
 });

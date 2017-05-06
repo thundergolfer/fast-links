@@ -1,4 +1,5 @@
 const bluebird = require('bluebird');
+var natural = require('./natural');
 
 global.Promise = bluebird;
 

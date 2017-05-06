@@ -6,6 +6,37 @@ var nlpAnalyser = require('./entity_recognition');
 var $ = require('jquery');
 var jQuery = $;
 
+var natural = require('./natural');
+
+// Chrome history ranker.
+function rankArticles(comment, articles) {
+  var TfIdf = natural;
+  console.log(natural);
+  console.log(TfIdf);
+  var tfidf = new TfIdf();
+
+  articles.forEach(function(article) {
+    tfidf.addDocument(article.text)
+  })
+
+  tfidf.tfidfs(comment, function(i, measure) {
+    articles[i].score = measure;
+  })
+
+  articles.sort(function(a, b){
+    var keyA = a.score,
+        keyB = b.score;
+    // Compare the 2 dates
+    if(keyA < keyB) return 1;
+    if(keyA > keyB) return -1;
+    return 0;
+  });
+
+  console.log("Ranked!");
+  console.log(articles);
+  return articles;
+};
+
 class InjectApp extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +75,8 @@ class InjectApp extends Component {
 }
 
 console.log("Hello from inject.js");
+
+
 
 function selectText(element) {
     var doc = document
@@ -196,8 +229,40 @@ window.addEventListener('load', () => {
       return url;
 
     }
-		function setSuggestionItems(arr){
+		function setSuggestionItems(arr, comment){
+      console.log("Setting suggestion items");
       console.log(arr);
+      console.log("THIS IS THE COMMENT!: " + comment);
+
+      var articles = arr;
+
+      var request = require('sync-request');
+      for (var i = 0; i < arr.length; i++) {
+        var page = arr[i];
+
+        try {
+          var res = request('GET', page.url);
+          page.text = res.getBody();
+        } catch(err) {
+          page.text = "";
+        }
+      }
+      /* PROCESSING THE HISTORY URLS */
+
+      // Replace this.
+      // var articles = [
+      //   {title: "Article One",
+      //    url: "http://google.com",
+      //    body: "Human sexuality is the capacity of humans to have erotic experiences and responses. Someone's sexual orientation can influence that person's sexual interest and attraction for another person"},
+      //   {title: "Philosophy",
+      //    url: "http://facebook.com",
+      //    body: "is the study of general and fundamental problems concerning matters such as existence, knowledge, values, reason, mind, and language.[5][6] The term was probably coined by Pythagoras (c. 570 – c. 495 BC). Philosophical methods include questioning, critical discussion, rational argument and systematic presentation."},
+      //   {title: "Football",
+      //    url: "http://reddit.com",
+      //    body: "Association football, more commonly known as football or soccer,[3] is a team sport played between two teams of eleven players with a spherical ball. It is played by 250 million players in over 200 countries and dependencies making it the world's most popular sport.[4][5][6][7] The game is played on a rectangular field with a goal at each end. The object of the game is to score by getting the ball into the opposing goal."}
+      // ]
+      /* ----- FINISH --------        */
+
 			var sb = $("#search_suggestions");
 			if(arr.length === 0){
 				sb.css("display","none");
@@ -206,10 +271,17 @@ window.addEventListener('load', () => {
 			sb.css("display","block");
       sb.css("z-index",5000)
 			sb.html("<ol></ol>");
-			arr.sort(function(v1,v2){return ((v1.visitCount + v1.typedCount*2) - (v2.visitCount + v2.typedCount*2))});
-      arr.forEach(function(v){
-				sb.children("ol").append("<li url='" + v.url + "' title='" + v.title +"'>" + nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>");
-			});
+
+      // Replace this comment.
+      var comment = "Human sexuality is the capacity of humans to have erotic experiences and responses. Someone's sexual orientation";
+      articles = rankArticles(comment, articles);
+
+
+      for(var i = 0; i < 5; i++){
+        var v = articles[i];
+        sb.children("ol").append("<li url='" + v.url + "' title='" + v.title +"'>" + nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>");
+      }
+
       $("#search_suggestions > ol > li").click(function(){
         console.log("clicked");
         $(this).parent().children(".selected").removeClass("selected");
@@ -222,7 +294,7 @@ window.addEventListener('load', () => {
 		}
 
     chrome.extension.onMessage.addListener(function(message){
-      setSuggestionItems(message);
+      setSuggestionItems(message, $("listening").val());
     })
 
     // Some keys don't get caught with keypress, put them here.
