@@ -184,17 +184,16 @@ window.addEventListener('load', () => {
 
     $("body").click(function(){
       if($("textarea.listening").length > 0){
-        $("textarea.listening").forEach(function(t){stopListening(t)});
+        $("textarea.listening").each(function(t){stopListening($(t))});
       }
     });
     function nicefyURL(url){
-      if(url.substring(0,5) === "https"){
-        url = url.substring(12,27).trim();
-      }
-      else{
-        url = url.substring(11,26).trim();
-      }
+      var temp = document.createElement("a");
+      temp.href = url;
+      url = temp["hostname"];
+      $(temp).remove();
       return url;
+
     }
 		function setSuggestionItems(arr){
       console.log(arr);
@@ -206,7 +205,7 @@ window.addEventListener('load', () => {
 			sb.css("display","block");
       sb.css("z-index",5000)
 			sb.html("<ol></ol>");
-			arr.sort(function(v1,v2){return v1.visitCount - v2.visitCount});
+			arr.sort(function(v1,v2){return ((v1.visitCount + v1.typedCount*2) - (v2.visitCount + v2.typedCount*2))});
       arr.forEach(function(v){
 				sb.children("ol").append("<li url='" + v.url + "' title='" + v.title +"'>" + nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>");
 			});
@@ -225,7 +224,7 @@ window.addEventListener('load', () => {
       setSuggestionItems(message);
     })
 
-
+    // Some keys don't get caught with keypress, put them here.
     $("textarea").keyup(function(e){
       var t = $(this);
       if(t.hasClass("listening")){
@@ -241,7 +240,14 @@ window.addEventListener('load', () => {
       else if(e.keyCode === 32 || e.keyCode === 27){
         stopListening(t);
       }
+      else if(e.keyCode === 9){
+        var temp = t.children("ol").children("li.selected").next();
+        t.children("ol").children("li.selected").removeClass("selected");
+        temp.addClass("selected");
+      }
     })
+
+
 		$("textarea").keypress(function(e){
       var t = $(this);
 			if(t.hasClass("listening")){
