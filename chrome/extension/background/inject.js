@@ -7,6 +7,8 @@ function isInjected(tabId) {
   });
 }
 
+console.log("Hello from background/inject.js");
+
 function loadScript(name, tabId, cb) {
   if (process.env.NODE_ENV === 'production') {
     chrome.tabs.executeScript(tabId, { file: `/js/${name}.bundle.js`, runAt: 'document_end' }, cb);
@@ -32,7 +34,7 @@ function loadScript(name, tabId, cb) {
 }
 
 
-const arrowURLs = [/^https:\/\/www.reddit\.com/, /^https:\/\/github\.com/];
+const arrowURLs = [/^https:\/\/www.reddit\.com/, /facebook.com/];
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   // alert("Hey! chrome.tabs.onUpdated event.");

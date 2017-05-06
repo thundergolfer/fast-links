@@ -31,7 +31,8 @@ chrome.contextMenus.create({
   contexts: ['all'],
   documentUrlPatterns: [
     'https://github.com/*',
-    'https://reddit.com/*'
+    'https://reddit.com/*',
+    'https://facebook.com/*'
   ]
 });
 

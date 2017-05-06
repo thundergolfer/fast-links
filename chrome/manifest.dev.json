@@ -24,6 +24,7 @@
                   "storage",
                   "https://github.com/*",
                   "https://reddit.com/*",
+                  "*://*.facebook.com/*",
                   "http://localhost:3000/*",
                   "https://localhost:3000/*",
                   "<all_urls>",
