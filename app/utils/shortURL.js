@@ -1,7 +1,6 @@
 function myFuncion()
 {
 	var request = require('request');
-	var Sync = require('sync');
 
 	// Set the headers
 	var headers = {
