@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Dock from 'react-dock';
-//import nlpDecorator from './entity_recognition';
 var nlpAnalyser = require('./entity_recognition');
 var $ = require('jquery');
 var jQuery = $;

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fast-links-extension",
+  "private_key_id": "1e4380bf120f5c6dc4a73315b85f7218659bf107",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDF8RcvyxR+vK7V\nCbB0yLkVbsUxPaKOvuTVcMW1rC7c/0uOmXgwSwohBLniekAqnp2qaquC+dPSAvy3\n6K4D3iQtPnQAyzM4D+dS8EgzcSseV+EDXXPwN73SxrTw6febGQCsMhXdUWjIaIIA\nO4y1R0zVlhKSh913npN+/7fRlsY/GKBLm2DSz3fDvedv6KOzLz+nIok5cGmtQfKD\ncJXvzHM3RAfj0yJxlbCL2rLv7fJRq1FZoj+3W2D6FecasqkclB0PHo/E8BCE3Yde\nzTuvfOUY03f9chdcdaZp/PFYYBJeo0xjROa4oIyJWsrNSPhhB4WtlT0ZBDTmLy27\ntgrkhb/lAgMBAAECggEAbn6u2tcakcTyM6o8/nQuHXDAU0R8wgJ960gQleGQJ327\nx9aT6SF6fgQNYAeuWhxBFyiEpZCgVdOlD2Sr/yy6NSdvyiGkbd8y2nGXXGAIGeAk\nk6RPXAFBza9uwi1ZMxM59OXgnrMbMwRjzY1wdqFemrwzkeiWEHhNDc/h5PWtpPo1\nkJhEkc5nPwZZ+WqkP4OjeArOumR6l3cIVeJBkyzqZRqwKfeGr3FFh7ZYlsYsJsus\nQoVHUB2cCOlnfQcRVuycZtW0qhPz0eTerLs115dYW57ghjl2dUsu+Bov8DR5BT7B\nZpx0J8hCY69hBGS0M+pqqFnpkHkrkAvOlkRjAnHd4QKBgQD52HTiXwJUKtgE/Wxx\ny8iV7rMvaGIpgX07DXQ2mFX4UBMut7LjPSuCmkqlNu9bSO8xZu7SnijZnBgwl2K8\ncm3UzN7NCwVY9rxNnY0qel5preH7rpXpGNHxdNgDE1uwF8WyjOWhkSp5L2vr4HqI\nEZxGIsr6gWCNtA22UVM691C2wwKBgQDK0VM+D1neB/sJzaU+w6+kGLvimOJwV8IH\n7UM/c1oPEeyu0X7LOEcZyJ0YUrnv5ZSGZ81GxRRwJT6XgrTeg/wpVVLhr2NeyOee\nD6qGTLTnGp3D7X7iTpmoDxx6NGp79cBGx8a0BbrcWcC1smDhVL8sYJrGaQtNHUEa\n67yYrofUNwKBgEg8MO8SERZMnNA0hRoRlRjkPqJCR79AVPix1xvBx3lXjXRAYFQa\n522HNnW2AFYgLCfYXsw+NglUfBnwaveZDfAsm24k9ZLXI3I9TwctAgcD4wZlX6pZ\nJrns0ldxTV0IQnxxCCNCWUlYUJeN+19D2C7e+Fic91GA8UX5FVtDDe8JAoGBALVG\ngvBlKB2bZHVOqPOAU+yHbucJXtqqlXIgTorXvxbZHoLiHEHm+yXAeSjUR/xzZlz7\nSi6G182kfF1PJfn8XdVTvdCZwmdlih9sQS3oQYiN8ZS9ITuEpTHgz8MqNkK1VDXv\nOVqOBIYOcn/z/0NnS7eOYMgV+1PhYd999ANDe4PhAoGAZJewzmARC2UmjGDBzjhz\nCn/iEl92XXAAlFv0sXocmjUcbd8M669QRYCGznzcS+Wt3VDaqQoL/sAFFuNpYFWZ\n6vMr5DyKT4ETb9+m3agzkRyjmQk31XGNM/vPg+KJRQx1fTwOWMCKaWQice+nWdBF\nFanTJVXReyV7XEuH2BsK3f0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "jonobelotti@fast-links-extension.iam.gserviceaccount.com",
+  "client_id": "117713363940720107415",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/jonobelotti%40fast-links-extension.iam.gserviceaccount.com"
+}
