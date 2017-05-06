@@ -1,3 +1,4 @@
+var $ = require('jquery');
 exports.nlpDecorator = function(text, platform) {
     var request = require('sync-request');
     var api_key = "AIzaSyDSzPlQBcgLbwdRTlmqWQEJbaJcMqNmtV0";
@@ -47,6 +48,37 @@ exports.nlpDecorator = function(text, platform) {
     });
 
     // Return decorated text.
+    if(platform === "reddit"){
+      text = exports.parseQuotes(text);
+    }
     return text;
 
+}
+exports.asyncString = "";
+exports.asyncCount = 0;
+exports.parseQuotes = function(text){
+  exports.asyncString = text;
+  text.split(">").forEach(function(s){
+    exports.asyncCount += 1;
+    var temp = s.split("\n")[0];
+    exports.searchQuery(temp,function(data){
+      exports.asyncCount -= 1;
+      console.log(data);
+    //  exports.asyncString.replace(">" + temp,"[" + temp + "]("+ data.url +")");
+    })
+  });
+  return text;
+}
+
+
+exports.searchQuery = function(query, callback){
+  $.get(
+    "https://www.googleapis.com/customsearch/v1",
+  {
+    key: "AIzaSyC_ejuZZNe1VyjZgOyIRae4KmEGiAqGrbY",
+    q: query,
+  },
+  callback,
+  "json"
+);
 }
