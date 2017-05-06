@@ -284,6 +284,8 @@ window.addEventListener('load', () => {
 				t.prop("search_value","");
 			}
 		})
+
+
     console.log("We're on Reddit");
     var buttons = document.getElementsByTagName("button");
     for (var i = 0; i < buttons.length; i++) {
@@ -300,6 +302,33 @@ window.addEventListener('load', () => {
         }
       }
     }
+
+    /* Make is work on 'reply' boxes as well */
+    var reply_buttons = document.getElementsByClassName('reply-button');
+    for (var i = 0; i < reply_buttons.length; i++) {
+      console.log(reply_buttons[i]);
+      reply_buttons[i].onclick = function() {
+        /* Put the things here Avrami */
+
+        /* --- CODE GOES HERE --------*/
+
+        /* -------------------------- */
+        console.log("binding our stuff to a reply button link");
+        // find the new textarea
+        var save_buttons = document.getElementsByClassName('save');
+        for (var j = 0; j < save_buttons.length; j++) {
+          var saver = save_buttons[j];
+          saver.onclick = function() {
+            console.log("a reply save button clicked~!");
+            var form = $(this).parent().parent().siblings().find('textarea')[0];
+            console.log(form);
+            console.log(form.value);
+            form.value = nlpAnalyser.nlpDecorator(form.value, "reddit");
+          }
+        }
+      };
+    }
+
   } else if (allowedURLs.facebook.test(tab_url)) {
     console.log("We're on Facebook.")
     var post_box = document.getElementById("composer_text_input_box");
