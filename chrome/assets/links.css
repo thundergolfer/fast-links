@@ -1,0 +1,22 @@
+/*
+  Underline is composed of bottom border and inset box-shadow.
+*/
+/*
+Site CSS Selector Key:
+
+.md p a -> Reddit.com
+
+*/
+
+.md p a
+{
+  color: black !important;
+  text-decoration: none;
+  border-bottom: .0625em solid #D4F0FF;
+  box-shadow: 0 -.4em 0 #D4F0FF inset;
+}
+
+.md p a:hover {
+  border-color: #aedbf9;
+  box-shadow: 0 -.75em 0 #aedbf9 inset;
+}
