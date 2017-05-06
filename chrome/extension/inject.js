@@ -111,7 +111,7 @@ function copyTextToClipboard(text) {
   textArea.select();
 
   try {
-    var successful = document.execCommand('copy');
+    var successful = document.execCommand('Copy', false, null);
     var msg = successful ? 'successful' : 'unsuccessful';
     console.log('Copying text command was ' + msg);
   } catch (err) {
