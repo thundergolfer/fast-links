@@ -79,6 +79,7 @@
     "react-redux": "^4.3.0",
     "redux": "^3.2.1",
     "redux-thunk": "^2.0.1",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "sync-request": "^4.0.3"
   }
 }
