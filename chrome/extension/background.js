@@ -32,8 +32,8 @@ chrome.extension.onMessage.addListener(
     console.log(request);
     chrome.history.search(
       {
-        text:request.search_str,
-        maxResults: 10,
+        text:"",
+        maxResults: 20,
       },function(results){
         console.log(results);
         chrome.tabs.sendMessage(sender.tab.id,results);

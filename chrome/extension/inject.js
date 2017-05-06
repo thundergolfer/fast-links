@@ -178,7 +178,7 @@ window.addEventListener('load', () => {
     function confirmSuggestionItem(){
       var s  = $("#search_suggestions").children("ol").children(".selected");
       var t = $("textarea.listening").first();
-      t.val(t.val().replace("%" + t.prop("search_value"),"[" + s.attr("title") + "](" + s.attr("url") + ")" ));
+      t.val(t.val().replace("%" + t.prop("search_value"),"[" + (t.prop("search_value").length > 0 ? t.prop("search_value") :s.attr("title")) + "](" + s.attr("url") + ")" ));
       $('textarea').trigger('change');
       stopListening(t);
     }
@@ -226,7 +226,7 @@ window.addEventListener('load', () => {
     })
 
     // Some keys don't get caught with keypress, put them here.
-    $("textarea").keyup(function(e){
+    var keyUpListener = function(e){
       var t = $(this);
       if(t.hasClass("listening")){
         var s = t.prop("search_value");
@@ -238,7 +238,7 @@ window.addEventListener('load', () => {
           t.prop("search_value",s.substring(0	,s.length-1));
         }
       }
-      else if(e.keyCode === 32 || e.keyCode === 27){
+      else if(e.keyCode === 27){
         stopListening(t);
       }
       else if(e.keyCode === 9){
@@ -246,10 +246,10 @@ window.addEventListener('load', () => {
         t.children("ol").children("li.selected").removeClass("selected");
         temp.addClass("selected");
       }
-    })
+    }
 
 
-		$("textarea").keypress(function(e){
+		var keyPressListner = function(e){
       var t = $(this);
 			if(t.hasClass("listening")){
 				var s = t.prop("search_value");
@@ -276,43 +276,30 @@ window.addEventListener('load', () => {
 				else{
 					t.prop("search_value", t.prop("search_value") + String.fromCharCode(e.keyCode));
 				}
-        chrome.extension.sendMessage({search_str: t.prop("search_value")});
 			}
 			else if(e.keyCode === 37){
+        $(".listening").removeClass("listening");
 				attachSuggestionBox(t);
 				t.addClass("listening");
 				t.prop("search_value","");
 			}
-		})
-
-
-    console.log("We're on Reddit");
-    var buttons = document.getElementsByTagName("button");
-    for (var i = 0; i < buttons.length; i++) {
-      var button  = buttons[i];
-      if (button.getAttribute('type') === 'submit') {
-        console.log(button);
-        button.onclick = function() {
-          console.log("Pippets");
-          console.log(this);
-          var form = $(this).parent().parent().siblings().find('textarea')[0];
-          console.log(form);
-          console.log(form.value);
-          form.value = nlpAnalyser.nlpDecorator(form.value, "reddit");
-        }
+      if(t.hasClass("listening")){
+        chrome.extension.sendMessage({search_str: t.prop("search_value")});
       }
-    }
+		}
+
+    $("textarea").keyup(keyUpListener);
+    $("textarea").keypress(keyPressListner);
+
 
     /* Make is work on 'reply' boxes as well */
     var reply_buttons = document.getElementsByClassName('reply-button');
     for (var i = 0; i < reply_buttons.length; i++) {
       console.log(reply_buttons[i]);
       reply_buttons[i].onclick = function() {
-        /* Put the things here Avrami */
-
-        /* --- CODE GOES HERE --------*/
-
-        /* -------------------------- */
+        var form = $(this).parent().parent().siblings().find('textarea').first();
+        $(form).keyup(keyUpListener);
+        $(form).keypress(keyPressListner);
         console.log("binding our stuff to a reply button link");
         // find the new textarea
         var save_buttons = document.getElementsByClassName('save');
@@ -329,6 +316,28 @@ window.addEventListener('load', () => {
       };
     }
 
+    var tab_url = window.location.href;
+    console.log(tab_url);
+
+
+    if (allowedURLs.reddit.test(tab_url)) {
+      console.log("We're on Reddit");
+    $("head").append("<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel= \"stylesheet\" integrity= \"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin= \"anonymous\" > ")
+
+    $(".usertext-buttons").append("<a class='fastlink-btn btn btn-default' data-toggle='modal' data-target='#myModal'>FastLink</a>");
+    $(".fastlink-btn").click(function (t) {
+        $(".flagged").removeClass("flagged");
+        $(this).parent().parent().parent().addClass("flagged")
+        $("form.form-modal > .form-group > textarea").val(nlpAnalyser.nlpDecorator($(this).parent().parent().parent().children(".md").children("textarea").val(), "reddit"));
+    })
+    var doSubmitFastLinks = function () {
+        $(".flagged").children(".md").children("textarea").val($("form.form-modal > .form-group > textarea").val());
+        $("#MyModal").css("display", "none");
+    }
+
+
+    $("body").prepend("<div id='myModal' class='modal fade' tabindex='- 1' role='dialog'> <form class='form form-modal' style='margin: 10px;'> <div class='form-group'><textarea class='form-control' rows='4' cols='5' width='10px'></textarea><input id='modal-submit' class='btn btn-success' data-dismiss='modal' value='Confirm'/></form></div>")
+    $("#modal-submit").click(doSubmitFastLinks);
   } else if (allowedURLs.facebook.test(tab_url)) {
     console.log("We're on Facebook.")
     var post_box = document.getElementById("composer_text_input_box");
@@ -376,8 +385,9 @@ window.addEventListener('load', () => {
         }
       }
     }
-  }
-});
+
+}
+}});
 
 // TEMP: This is my shit because my stuff is broken
 String.prototype.ellipse = String.prototype.ellipse || function(l){
