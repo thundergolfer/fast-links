@@ -157,7 +157,7 @@ window.addEventListener('load', () => {
   if (allowedURLs.reddit.test(tab_url)) {
     $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
     $("head").append("<style>#search_suggestions > ol >li:hover{background-color:lightblue;cursor:pointer;}</style>")
-    $("head").append("<style>#search_suggestions > ol >li{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}</style>")
+    $("head").append("<style>#search_suggestions > ol >li{white-space: nowrap;display:block;overflow: hidden;text-overflow: ellipsis;}</style>")
 		createSuggestionBox();
 		function createSuggestionBox(){
 			$("body").append("<div id='search_suggestions' "+
@@ -170,24 +170,23 @@ window.addEventListener('load', () => {
 			sb.css("top",e.offset().top);
 		}
     function stopListening(t){
-      t.attr("listening",false);
+      t.removeClass("listening");
       t.prop("search_value","");
       $("#search_suggestions").css("display","none");
     }
     function confirmSuggestionItem(){
       var s  = $("#search_suggestions").children("ol").children(".selected");
-      var t = $("textarea[listening='true']");
-      debugger;
+      var t = $("textarea.listening").first();
       t.val(t.val().replace("%" + t.prop("search_value"),"[" + s.attr("title") + "](" + s.attr("url") + ")" ));
+      $('textarea').trigger('change');
       stopListening(t);
     }
-    $("#search_suggestions").children("ol").children("li").click(function(){
-      console.log("clicked");
-      $(this).parent().children(".selected").removeClass("selected");
-      $(this).addClass("selected");
-      confirmSuggestionItem();
-    })
-    $("body").click(function(){$("#search_suggestions").css("display","none")});
+
+    $("body").click(function(){
+      if($("textarea.listening").length > 0){
+        $("textarea.listening").forEach(function(t){stopListening(t)});
+      }
+    });
     function nicefyURL(url){
       if(url.substring(0,5) === "https"){
         url = url.substring(12,27).trim();
@@ -211,6 +210,12 @@ window.addEventListener('load', () => {
       arr.forEach(function(v){
 				sb.children("ol").append("<li url='" + v.url + "' title='" + v.title +"'>" + nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>");
 			});
+      $("#search_suggestions > ol > li").click(function(){
+        console.log("clicked");
+        $(this).parent().children(".selected").removeClass("selected");
+        $(this).addClass("selected");
+        confirmSuggestionItem();
+      })
       console.log(sb.children("ol").children());
 			sb.css("height", sb.children("ol").outerHeight());
       sb.children("ol").children("li").first().addClass("selected");
@@ -223,7 +228,7 @@ window.addEventListener('load', () => {
 
     $("textarea").keyup(function(e){
       var t = $(this);
-      if(t.attr("listening") === true){
+      if(t.hasClass("listening")){
         var s = t.prop("search_value");
         // backspace = remove stuff
         if(e.keyCode === 8 || e.keyCode === 46){
@@ -239,7 +244,7 @@ window.addEventListener('load', () => {
     })
 		$("textarea").keypress(function(e){
       var t = $(this);
-			if(t.attr("listening")){
+			if(t.hasClass("listening")){
 				var s = t.prop("search_value");
 				// backspace = remove stuff
 				if(e.keyCode === 8 || e.keyCode === 46){
@@ -268,7 +273,7 @@ window.addEventListener('load', () => {
 			}
 			else if(e.keyCode === 37){
 				attachSuggestionBox(t);
-				t.attr("listening",true);
+				t.addClass("listening");
 				t.prop("search_value","");
 			}
 		})
