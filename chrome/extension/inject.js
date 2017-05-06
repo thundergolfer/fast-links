@@ -148,14 +148,12 @@ window.addEventListener('load', () => {
 
   if (allowedURLs.reddit.test(tab_url)) {
     //console.log("We're on Reddit");
-      var btSec = $(".usertext-buttons").append("<button type='submit' class='inline'>FastLink</button>");
+    $(".usertext-buttons").append("<button type='submit' class='inline'>FastLink</button>");
+    $(".fastlink-btn").click(function(t){
+      $("div.form-modal > .form-group > textarea").val(nlpAnalyser.nlpDecorator($("div.form-modal > .form-group > textarea").val(),"reddit"));
+    })
 
-   // $("head").append("<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel= \"stylesheet\" integrity= \"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin= \"anonymous\" > ")
-    //btSec.each(function (t) {
-    //    $(t).append("<button type='submit'>FastLink</button>");
-    //})
-
-      $("body").prepend("<div class='form form-modal' style='margin: 10px;z-index:5000;'><div class='form-group'><textarea class='form-control' rows='4' cols='5' width='10px'></textarea></div ><input type='submit' class='btn btn-success'/></div>")
+    $("body").prepend("<div class='form form-modal' style='margin: 10px;z-index:5000;'><div class='form-group'><textarea class='form-control' rows='4' cols='5' width='10px'></textarea></div ><input type='submit' class='btn btn-success'/></div>")
     $(".inline").colorbox({ html: $("div.form-modal"), width: "50%", height: "50%" });
   } else if (allowedURLs.facebook.test(tab_url)) {
     console.log("We're on Facebook.")
