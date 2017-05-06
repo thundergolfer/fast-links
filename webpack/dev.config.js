@@ -8,6 +8,12 @@ const customPath = path.join(__dirname, './customPublicPath');
 const hotScript = 'webpack-hot-middleware/client?path=__webpack_hmr&dynamicPublicPath=true';
 
 const baseDevConfig = () => ({
+  node: {
+    fs: "empty",
+    console: "empty",
+    net: "empty",
+    tls: "empty"
+  },
   devtool: 'eval-cheap-module-source-map',
   entry: {
     todoapp: [customPath, hotScript, path.join(__dirname, '../chrome/extension/todoapp')],
@@ -61,6 +67,8 @@ const baseDevConfig = () => ({
         'css?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
         'postcss'
       ]
+    }, {
+      test: /\.json$/, loader: 'json-loader'
     }]
   }
 });
@@ -81,5 +89,5 @@ const appConfig = baseDevConfig();
 
 module.exports = [
   injectPageConfig,
-  appConfig
+  appConfig,
 ];
