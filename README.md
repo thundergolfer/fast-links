@@ -15,5 +15,5 @@
  - ## **4.75 billion pieces** of contact shared **per day.**##
 
 
-![alt](http://imgur.com/Uon07Of)
-![alt](http://imgur.com/a/65J1g)
+![alt](http://jonathonbelotti.com/fast-links/improved_two.png)
+![alt](http://jonathonbelotti.com/fast-links/improved_one.png)
