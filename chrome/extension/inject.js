@@ -44,13 +44,83 @@ class InjectApp extends Component {
 
 console.log("Hello from inject.js");
 
-function deepest (subMenu, select) {
-  return [].slice.call (subMenu).reduce (
-    function (deepest, el) {
-      for (var d = 0, e = el; e !== subMenu; d++, e = e.parentNode);
-      return d > deepest.d ? {d: d, el: el} : deepest;
-    }, {d: 0, el: subMenu}).el;
-};
+function selectText(element) {
+    var doc = document
+        , text = doc.getElementById(element)
+        , range, selection
+    ;
+
+    console.log(text); console.log("heyeyeye");
+    if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
+
+function copyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+
+  //
+  // *** This styling is an extra step which is likely not required. ***
+  //
+  // Why is it here? To ensure:
+  // 1. the element is able to have focus and selection.
+  // 2. if element was to flash render it has minimal visual impact.
+  // 3. less flakyness with selection and copying which **might** occur if
+  //    the textarea element is not visible.
+  //
+  // The likelihood is the element won't even render, not even a flash,
+  // so some of these are just precautions. However in IE the element
+  // is visible whilst the popup box asking the user for permission for
+  // the web page to copy to the clipboard.
+  //
+
+  // Place in top-left corner of screen regardless of scroll position.
+  textArea.style.position = 'fixed';
+  textArea.style.top = 0;
+  textArea.style.left = 0;
+
+  // Ensure it has a small width and height. Setting to 1px / 1em
+  // doesn't work as this gives a negative w/h on some browsers.
+  textArea.style.width = '2em';
+  textArea.style.height = '2em';
+
+  // We don't need padding, reducing the size if it does flash render.
+  textArea.style.padding = 0;
+
+  // Clean up any borders.
+  textArea.style.border = 'none';
+  textArea.style.outline = 'none';
+  textArea.style.boxShadow = 'none';
+
+  // Avoid flash of white box if rendered for any reason.
+  textArea.style.background = 'transparent';
+
+
+  textArea.value = text;
+
+  document.body.appendChild(textArea);
+
+  textArea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copying text command was ' + msg);
+  } catch (err) {
+    console.log('Oops, unable to copy');
+  }
+
+  document.body.removeChild(textArea);
+}
+
 
 window.addEventListener('load', () => {
   console.log("Adding Inject component");
@@ -62,6 +132,9 @@ window.addEventListener('load', () => {
 });
 
 window.addEventListener('load', () => {
+
+  var fast_linked;
+
   console.log("Executing block to handle comment intercept");
 
   const allowedURLs = {
@@ -95,14 +168,44 @@ window.addEventListener('load', () => {
     console.log(post_box);
 
     post_box.onclick = function () {
-      var post_button = document.querySelectorAll('[data-testid="react-composer-post-button"]')[0];
-      console.log("post_button");
-      console.log(post_button);
-      post_button.onclick = function() {
-        console.log("Clicked! the post button.");
-        console.log(post_box.textContent);
+
+      if (fast_linked) {
         var text_span = document.querySelectorAll('[data-text="true"]')[0];
-        console.log(text_span.innerHTML);
+        text_span.id = "to_highlight";
+        selectText("to_highlight");
+      } else {
+        var post_button = document.querySelectorAll('[data-testid="react-composer-post-button"]')[0];
+        console.log("post_button");
+        console.log(post_button);
+        var parent_div = post_button.parentElement;
+        if (!document.getElementById("fastlinks")) {
+          console.log("element doesn't exist");
+          var new_button = post_button.cloneNode(true);
+          console.log(new_button);
+          var new_button_inner_span = new_button.getElementsByTagName("span")[0];
+          new_button_inner_span.innerHTML = "fastlink";
+          console.log("new button");
+          console.log(new_button);
+          parent_div.appendChild(new_button);
+
+          new_button.id = "fastlinks";
+
+
+          new_button.onclick = function() {
+            console.log("Clicked! the fastlink button.");
+            // debugger;
+            console.log(post_box.textContent);
+            var text_span = document.querySelectorAll('[data-text="true"]')[0];
+            console.log(text_span.innerHTML);
+
+            fast_linked = text_span.innerHTML + "THIS HAS BEEN HELLOOOLOOKOINADDED!";
+            text_span.innerHTML = "NOW PASTE HERE!";
+            text_span.id = 'to_highlight';
+
+            console.log("COPIED!");
+            copyTextToClipboard(fast_linked);
+          }
+        }
       }
     }
   }
