@@ -1,4 +1,4 @@
-function nlpDecorator(text, platform) {
+exports.nlpDecorator = function(text, platform) {
     var request = require('sync-request');
     var api_key = "AIzaSyDSzPlQBcgLbwdRTlmqWQEJbaJcMqNmtV0";
 
@@ -50,4 +50,3 @@ function nlpDecorator(text, platform) {
     return text;
 
 }
-console.log(nlpDecorator("hello barrack obama", "reddit"));

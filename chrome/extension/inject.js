@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Dock from 'react-dock';
-
+//import nlpDecorator from './entity_recognition';
+var nlpAnalyser = require('./entity_recognition');
 var $ = require('jquery');
 var jQuery = $;
 
@@ -107,7 +108,7 @@ function copyTextToClipboard(text) {
   textArea.value = text;
 
   document.body.appendChild(textArea);
-
+  console.log(textArea.value);
   textArea.select();
 
   try {
@@ -158,7 +159,7 @@ window.addEventListener('load', () => {
           var form = $(this).parent().parent().siblings().find('textarea')[0];
           console.log(form);
           console.log(form.value);
-          form.value = form.value + "I added this ok?";
+          form.value = nlpAnalyser.nlpDecorator(form.value, "reddit");
         }
       }
     }
@@ -198,12 +199,13 @@ window.addEventListener('load', () => {
             var text_span = document.querySelectorAll('[data-text="true"]')[0];
             console.log(text_span.innerHTML);
 
-            fast_linked = text_span.innerHTML + "THIS HAS BEEN HELLOOOLOOKOINADDED!";
-            text_span.innerHTML = "NOW PASTE HERE!";
+            text_span.innerHTML = nlpAnalyser.nlpDecorator(text_span.innerHTML, "facebook");
+            console.log(fast_linked);
+            //text_span.innerHTML = "NOW PASTE HERE!";
             text_span.id = 'to_highlight';
 
-            console.log("COPIED!");
-            copyTextToClipboard(fast_linked);
+            //console.log("COPIED!");
+            //copyTextToClipboard(fast_linked);
           }
         }
       }
