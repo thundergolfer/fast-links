@@ -1,10 +1,10 @@
 {
-  "version": "0.0.0",
-  "name": "react-chrome-extension-example",
+  "version": "0.0.1",
+  "name": "Hackathon - Fast Links",
   "manifest_version": 2,
-  "description": "Example for react-chrome-extension-boilerplate",
+  "description": "Painlessly embed references into your online comments and posts",
   "browser_action": {
-    "default_title": "React Chrome Extension Example",
+    "default_title": "Fast Links",
     "default_popup": "popup.html"
   },
   "icons": {
@@ -18,6 +18,18 @@
   "background": {
     "page": "background.html"
   },
-  "permissions": [ "contextMenus", "tabs","history", "storage", "https://github.com/*", "https://reddit.com/*" ],
-  "content_security_policy": "default-src 'self'; script-src 'self'; style-src * 'unsafe-inline'; img-src 'self' data:;"
+  "permissions": ["contextMenus",
+                  "management",
+                  "tabs",
+                  "storage",
+                  "https://github.com/*",
+                  "https://reddit.com/*",
+                  "*://*.facebook.com/*",
+                  "http://localhost:3000/*",
+                  "https://localhost:3000/*",
+                  "<all_urls>",
+                  "webRequest",
+                  "webRequestBlocking"
+                  ],
+  "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 https://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 https://localhost:3000; style-src * 'unsafe-inline' 'self' blob:; img-src 'self' data:;"
 }
