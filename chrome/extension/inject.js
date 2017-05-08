@@ -151,6 +151,7 @@ window.addEventListener('load', () => {
                               -Avrami
   ***************************************************************************/
   if (allowedURLs.reddit.test(tab_url)) {
+    live.run();
     // For readablities sake
     $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
     $("head").append("<style>#search_suggestions > ol >li:hover{background-color:lightblue;cursor:pointer;}</style>")
