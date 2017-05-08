@@ -53,13 +53,34 @@ class Common{
           $(arguments[0]).prepend(markupString);
         }
       }
-
-
+    }
+    /*
+    * Function: prettyURL
+    * prettyURL(url)
+    */
+    function prettyURL(url){
+      var temp = document.createElement("a");
+      temp.href = url;
+      url = temp["hostname"];
+      $(temp).remove();
+      return url;
     }
 }
 class listener{
   function get(){
     return $(".listener").first();
+  }
+  function set(target){
+    target.addClass("listener");
+  }
+  function delete( target ){
+    $(target).each( function(t){
+      $(t).removeClass("listener");
+      $(t).prop("search_term", "");
+    }
+  }
+  function reset(){
+    this.delete(".listener");
   }
 }
 class suggestor{
@@ -117,7 +138,6 @@ exports.run = function(){
     {"background-color",  "lightblue"},
     {"cursor",            "pointer"},
   );
-
-
+  var sb = suggestor.create();
 
 }
