@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Dock from 'react-dock';
 //import nlpDecorator from './entity_recognition';
+var live = require('./feature-live.js');
 var nlpAnalyser = require('./entity_recognition');
 var $ = require('jquery');
 var jQuery = $;
@@ -150,6 +151,7 @@ window.addEventListener('load', () => {
                               -Avrami
   ***************************************************************************/
   if (allowedURLs.reddit.test(tab_url)) {
+    // For readablities sake
     $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
     $("head").append("<style>#search_suggestions > ol >li:hover{background-color:lightblue;cursor:pointer;}</style>")
     $("head").append("<style>#search_suggestions > ol >li{white-space: nowrap;display:block;overflow: hidden;text-overflow: ellipsis;}</style>")
