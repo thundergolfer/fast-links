@@ -75,9 +75,9 @@ describe('window (popup) page', function test() {
 
   after(async () => driver.quit());
 
-  it('should open Redux TodoMVC Example', async () => {
+  it('should open the FastLinks Project', async () => {
     const title = await driver.getTitle();
-    expect(title).to.equal('Redux TodoMVC Example (Window)');
+    expect(title).to.equal('FastLinks Project (Window)');
   });
 
   it('should can add todo', async () => {
