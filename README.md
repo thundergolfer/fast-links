@@ -1,9 +1,11 @@
 
 <p align="center">
-  <img src="/200_200_logo.png">
+  <img src="/images/200_200_logo.png">
 </p>
 
 # Fast Linking - Google Chrome Extension
+
+`Painlessly embed references into your online comments and posts`g
 
 -----
 
@@ -14,16 +16,15 @@ This project was worked on during a 24 hour Facebook regional hackathon and **ea
 
 ------
 
-
 ### Idea
 
- - ### Improve social comments on various social platforms such as Facebook or Reddit by decorating user comments with links and citations.
- - ## **510,000** messages sent **per minute**
- - ## **4.75 billion pieces** of contact shared **per day.**##
+ - #### Improve social comments on various social platforms such as Facebook or Reddit by decorating user comments with links and citations.
+ - #### **510,000** messages sent **per minute**
+ - #### **4.75 billion pieces** of contact shared **per day.**##
 
 
-![alt](http://jonathonbelotti.com/fast-links/improved_two.png)
-![alt](http://jonathonbelotti.com/fast-links/improved_one.png)
+![alt](/images/improved_two.png)
+![alt](/images/improved_one.png)
 
 
 -------
