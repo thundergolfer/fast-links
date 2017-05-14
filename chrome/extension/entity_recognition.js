@@ -1,22 +1,30 @@
+var googleNER = (text, api_key) => {
+  var request = require('sync-request');
+  var res = request('POST', 'https://language.googleapis.com/v1/documents:analyzeEntities?key=' + api_key, {
+      json: {
+          encodingType: "UTF8",
+          document: {
+              type: "PLAIN_TEXT",
+              content: text
+          }
+      },
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  });
+  var results = JSON.parse(res.getBody('utf8'));
+  console.log(results);
+  const entities = results.entities;
+
+  return entities;
+}
+
 exports.nlpDecorator = function(text, platform) {
     var request = require('sync-request');
     var api_key = "AIzaSyDSzPlQBcgLbwdRTlmqWQEJbaJcMqNmtV0";
 
-    var res = request('POST', 'https://language.googleapis.com/v1/documents:analyzeEntities?key=' + api_key, {
-        json: {
-            encodingType: "UTF8",
-            document: {
-                type: "PLAIN_TEXT",
-                content: text
-            }
-        },
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    var results = JSON.parse(res.getBody('utf8'));
-    console.log(results);
-    const entities = results.entities;
+    var entities = googleNER(text, api_key);
+
     var i = 1;
 
     // Loop through entities and parse Google's entity to extract relevant information.
