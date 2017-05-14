@@ -146,8 +146,14 @@ window.addEventListener('load', () => {
   var tab_url = window.location.href;
   console.log(tab_url);
   /***************************************************************************
+
+
+
                         This broken code is mine :)
                               -Avrami
+
+
+
   ***************************************************************************/
   if (allowedURLs.reddit.test(tab_url)) {
     $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
@@ -285,46 +291,23 @@ window.addEventListener('load', () => {
     $("textarea").keyup(keyUpListener);
     $("textarea").keypress(keyPressListner);
 
-    console.log("We're on Reddit");
-    var buttons = document.getElementsByTagName("button");
-    for (var i = 0; i < buttons.length; i++) {
-      var button  = buttons[i];
-      if (button.getAttribute('type') === 'submit') {
-        console.log(button);
-        button.onclick = function() {
-          console.log("Pippets");
-          console.log(this);
-          var form = $(this).parent().parent().siblings().find('textarea')[0];
-          console.log(form);
-          console.log(form.value);
-          form.value = nlpAnalyser.nlpDecorator(form.value, "reddit");
-        }
-      }
-    }
 
     /* Make is work on 'reply' boxes as well */
     var reply_buttons = document.getElementsByClassName('reply-button');
     for (var i = 0; i < reply_buttons.length; i++) {
       console.log(reply_buttons[i]);
-
       reply_buttons[i].onclick = function() {
-        /* Avrami's shit */
         var form = $(this).parent().parent().siblings().find('textarea').first();
         $(form).keyup(keyUpListener);
         $(form).keypress(keyPressListner);
-
-        /* END */
         console.log("binding our stuff to a reply button link");
         // find the new textarea
         var save_buttons = document.getElementsByClassName('save');
-
         for (var j = 0; j < save_buttons.length; j++) {
           var saver = save_buttons[j];
           saver.onclick = function() {
             console.log("a reply save button clicked~!");
-            var form = $(this).parent().parent().siblings().find('textarea').first();
-            $(form).keyup(keyUpListener);
-            $(form).keypress(keyPressListner);
+            var form = $(this).parent().parent().siblings().find('textarea')[0];
             console.log(form);
             console.log(form.value);
             form.value = nlpAnalyser.nlpDecorator(form.value, "reddit");
@@ -333,6 +316,28 @@ window.addEventListener('load', () => {
       };
     }
 
+    var tab_url = window.location.href;
+    console.log(tab_url);
+
+
+    if (allowedURLs.reddit.test(tab_url)) {
+      console.log("We're on Reddit");
+    $("head").append("<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel= \"stylesheet\" integrity= \"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin= \"anonymous\" > ")
+
+    $(".usertext-buttons").append("<a class='fastlink-btn btn btn-default' data-toggle='modal' data-target='#myModal'>FastLink</a>");
+    $(".fastlink-btn").click(function (t) {
+        $(".flagged").removeClass("flagged");
+        $(this).parent().parent().parent().addClass("flagged")
+        $("form.form-modal > .form-group > textarea").val(nlpAnalyser.nlpDecorator($(this).parent().parent().parent().children(".md").children("textarea").val(), "reddit"));
+    })
+    var doSubmitFastLinks = function () {
+        $(".flagged").children(".md").children("textarea").val($("form.form-modal > .form-group > textarea").val());
+        $("#MyModal").css("display", "none");
+    }
+
+
+    $("body").prepend("<div id='myModal' class='modal fade' tabindex='- 1' role='dialog'> <form class='form form-modal' style='margin: 10px;'> <div class='form-group'><textarea class='form-control' rows='4' cols='5' width='10px'></textarea><input id='modal-submit' class='btn btn-success' data-dismiss='modal' value='Confirm'/></form></div>")
+    $("#modal-submit").click(doSubmitFastLinks);
   } else if (allowedURLs.facebook.test(tab_url)) {
     console.log("We're on Facebook.")
     var post_box = document.getElementById("composer_text_input_box");
@@ -380,5 +385,11 @@ window.addEventListener('load', () => {
         }
       }
     }
-  }
-});
+
+}
+}});
+
+// TEMP: This is my shit because my stuff is broken
+String.prototype.ellipse = String.prototype.ellipse || function(l){
+	return (this.length > l) ? this.substr(0, l-1).trim() + '&hellip;' : this;
+}
