@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import Dock from 'react-dock';
 //import nlpDecorator from './entity_recognition';
 var nlpAnalyser = require('./entity_recognition');
+var utility = require('./utility');
 var $ = require('jquery');
 var jQuery = $;
 
@@ -147,34 +148,35 @@ window.addEventListener('load', () => {
   console.log(tab_url);
   /***************************************************************************
 
-
-
                         This broken code is mine :)
                               -Avrami
-
-
 
   ***************************************************************************/
   if (allowedURLs.reddit.test(tab_url)) {
     $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
     $("head").append("<style>#search_suggestions > ol >li:hover{background-color:lightblue;cursor:pointer;}</style>")
     $("head").append("<style>#search_suggestions > ol >li{white-space: nowrap;display:block;overflow: hidden;text-overflow: ellipsis;}</style>")
+
 		createSuggestionBox();
+
 		function createSuggestionBox(){
 			$("body").append("<div id='search_suggestions' "+
 			"style='display:none;position:absolute;width:250px;height:10px;border:2px solid #000000;background-color:#ffffff;'"+
 			"></div>");
 		}
+
 		function attachSuggestionBox(e){
 			var sb = $("#search_suggestions");
 			sb.css("left",e.offset().left + e.outerWidth());
 			sb.css("top",e.offset().top);
 		}
+
     function stopListening(t){
       t.removeClass("listening");
       t.prop("search_value","");
       $("#search_suggestions").css("display","none");
     }
+
     function confirmSuggestionItem(){
       var s  = $("#search_suggestions").children("ol").children(".selected");
       var t = $("textarea.listening").first();
@@ -188,21 +190,24 @@ window.addEventListener('load', () => {
         $("textarea.listening").each(function(t){stopListening($(t))});
       }
     });
+
     function nicefyURL(url){
       var temp = document.createElement("a");
       temp.href = url;
       url = temp["hostname"];
       $(temp).remove();
       return url;
-
     }
+
 		function setSuggestionItems(arr){
       console.log(arr);
 			var sb = $("#search_suggestions");
+
 			if(arr.length === 0){
 				sb.css("display","none");
 				return;
 			}
+
 			sb.css("display","block");
       sb.css("z-index",5000)
 			sb.html("<ol></ol>");
@@ -210,12 +215,14 @@ window.addEventListener('load', () => {
       arr.forEach(function(v){
 				sb.children("ol").append("<li url='" + v.url + "' title='" + v.title +"'>" + nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>");
 			});
+
       $("#search_suggestions > ol > li").click(function(){
         console.log("clicked");
         $(this).parent().children(".selected").removeClass("selected");
         $(this).addClass("selected");
         confirmSuggestionItem();
       })
+
       console.log(sb.children("ol").children());
 			sb.css("height", sb.children("ol").outerHeight());
       sb.children("ol").children("li").first().addClass("selected");
@@ -348,7 +355,7 @@ window.addEventListener('load', () => {
       if (fast_linked) {
         var text_span = document.querySelectorAll('[data-text="true"]')[0];
         text_span.id = "to_highlight";
-        selectText("to_highlight");
+        utility.selectText("to_highlight");
       } else {
         var post_button = document.querySelectorAll('[data-testid="react-composer-post-button"]')[0];
         console.log("post_button");
@@ -380,7 +387,7 @@ window.addEventListener('load', () => {
             text_span.id = 'to_highlight';
 
             //console.log("COPIED!");
-            //copyTextToClipboard(fast_linked);
+            //utility.copyTextToClipboard(fast_linked);
           }
         }
       }
