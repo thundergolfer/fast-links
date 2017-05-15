@@ -6,7 +6,7 @@ exports.platform.reddit;
 exports.platform.facebook;
 exports.platform.basic;
 
-function css(){
+function inject_css(){
   Common.injectCSS(
     "#search_suggestions",
     {"display","none"},
@@ -42,8 +42,9 @@ function css(){
 }
 
 
-// this is only temp, plan on making it more readable soon
 exports.run = function(){
+  inject_css();
   var suggestion_box = Suggestor.create();
   var text_listener = Listener.create();
+
 }
