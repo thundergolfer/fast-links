@@ -1,4 +1,7 @@
 var $ = require('jquery');
+exports.platform.reddit = false;
+exports.platform.facebook = false;
+exports.platform.basic = false;
 class Common{
     /*
     * Function: injectCSS
@@ -102,20 +105,54 @@ class suggestor{
       {"border","2px solid #000000"},
       {"background-color", "#ffffff"},
     );
+    Common.injectCSS(
+      "#search_suggestions.active",
+      {"display","block"},
+      {"z-index", "5000"}
+    )
     return $("search_suggestions");
   }
-  function set(){
+  function attach(target){
+    this.get().css("left", target.offset().left + target.outerWidth());
+    this.get().css("top", target.offset().top());
+  }
+  function set(arr){
+    if(arr.length === 0){
+      this.hide();
+    }
+    else{
+      this.get().addClass("active");
+      var html_str = "<ol>";
+      arr.sort(function(v1,v2){
+        return ((v1.visitCount + v1.typedCount*2) - (v2.visitCount + v2.typedCount*2))
+      });
+      arr.forEach(function(v){
+          html_str += "<li url='" + v.url + "' title='" + v.title +"'>" + nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>")
+      })
 
+      html_str += "</ol>";
+      this.get().html();
+    }
   }
   function attach(){
-    this.get().css("left",e.offset().left + e.outerWidth());
-    this.get().css("top",e.offset().top);
+    this.get().css("left",suggestor.get().offset().left + suggestor.get().outerWidth());
+    this.get().css("top",suggestor.get().offset().top);
   }
   function hide(){
-    this.get().css
+    this.get().removeClass("active");
   }
   function accept(){
-
+    var suggestor  = this.get().find("ol > .selected");
+    var entry = listener.get();
+    var header =
+    var format;
+    if(exports.platform.reddit){
+      format = "[" +  +"]"
+    }
+    t.val(t.val().replace("%" + t.prop("search_value"),
+    "[" + (t.prop("search_value").length > 0 ? t.prop("search_value") :s.attr("title")) + "](" + s.attr("url") + ")" ));
+    $('textarea').trigger('change');
+    stopListening(t);
   }
 }
 // this is only temp, plan on making it more readable soon

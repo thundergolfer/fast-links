@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Dock from 'react-dock';
+
 //import nlpDecorator from './entity_recognition';
-var live = require('./feature-live.js');
 var nlpAnalyser = require('./entity_recognition');
+// Import jquery.
 var $ = require('jquery');
-var jQuery = $;
+// Import my code.
+var live = require('./feature-live.js');
 
 class InjectApp extends Component {
   constructor(props) {
@@ -19,7 +21,7 @@ class InjectApp extends Component {
 
   render() {
     return (
-      <div>
+      < div>
         <button onClick={this.buttonOnClick}>
           Open TodoApp
         </button>
@@ -145,6 +147,10 @@ window.addEventListener('load', () => {
                        facebook: /facebook\.com/
                      };
   var tab_url = window.location.href;
+  live.platform.reddit = allowedURLs.reddit.test(tab_url);
+  live.platform.facebook = allowedURLs.facebook.test(tab_url);
+  live.platform.basic = allowedURLs.github.test(tab_url);
+
   console.log(tab_url);
   /***************************************************************************
                         This broken code is mine :)
