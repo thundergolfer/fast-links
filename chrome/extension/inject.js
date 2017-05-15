@@ -7,7 +7,7 @@ var nlpAnalyser = require('./entity_recognition');
 // Import jquery.
 var $ = require('jquery');
 // Import my code.
-var live = require('./feature-live.js');
+var feature_live_history = require('./feature-live/main.js');
 
 class InjectApp extends Component {
   constructor(props) {
