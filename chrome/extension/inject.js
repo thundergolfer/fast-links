@@ -58,11 +58,14 @@ window.addEventListener('load', () => {
   render(<InjectApp />, injectDOM);
 });
 
-
-var handleReddit = () => {
+var introducePopupLinksCSS = () => {
   $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
   $("head").append("<style>#search_suggestions > ol >li:hover{background-color:lightblue;cursor:pointer;}</style>")
   $("head").append("<style>#search_suggestions > ol >li{white-space: nowrap;display:block;overflow: hidden;text-overflow: ellipsis;}</style>")
+}
+
+var handleReddit = () => {
+  introducePopupLinksCSS();
 
   popup_linking.createSuggestionBox();
 
