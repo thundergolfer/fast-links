@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Dock from 'react-dock';
+
+var $ = require('jquery');
+var jQuery = $;
+
 //import nlpDecorator from './entity_recognition';
 var nlpAnalyser = require('./entity_recognition');
 var utility = require('./utility');
-var $ = require('jquery');
-var jQuery = $;
+var popup_linking = require('./popup_linking');
 
 class InjectApp extends Component {
   constructor(props) {
@@ -79,47 +82,13 @@ window.addEventListener('load', () => {
     $("head").append("<style>#search_suggestions > ol >li:hover{background-color:lightblue;cursor:pointer;}</style>")
     $("head").append("<style>#search_suggestions > ol >li{white-space: nowrap;display:block;overflow: hidden;text-overflow: ellipsis;}</style>")
 
-		createSuggestionBox();
-
-		function createSuggestionBox(){
-			$("body").append("<div id='search_suggestions' "+
-			"style='display:none;position:absolute;width:250px;height:10px;border:2px solid #000000;background-color:#ffffff;'"+
-			"></div>");
-		}
-
-		function attachSuggestionBox(e){
-			var sb = $("#search_suggestions");
-			sb.css("left",e.offset().left + e.outerWidth());
-			sb.css("top",e.offset().top);
-		}
-
-    function stopListening(t){
-      t.removeClass("listening");
-      t.prop("search_value","");
-      $("#search_suggestions").css("display","none");
-    }
-
-    function confirmSuggestionItem(){
-      var s  = $("#search_suggestions").children("ol").children(".selected");
-      var t = $("textarea.listening").first();
-      t.val(t.val().replace("%" + t.prop("search_value"),"[" + (t.prop("search_value").length > 0 ? t.prop("search_value") :s.attr("title")) + "](" + s.attr("url") + ")" ));
-      $('textarea').trigger('change');
-      stopListening(t);
-    }
+		popup_linking.createSuggestionBox();
 
     $("body").click(function(){
       if($("textarea.listening").length > 0){
-        $("textarea.listening").each(function(t){stopListening($(t))});
+        $("textarea.listening").each(function(t){popup_linking.stopListening($(t))});
       }
     });
-
-    function nicefyURL(url){
-      var temp = document.createElement("a");
-      temp.href = url;
-      url = temp["hostname"];
-      $(temp).remove();
-      return url;
-    }
 
 		function setSuggestionItems(arr){
       console.log(arr);
@@ -135,14 +104,14 @@ window.addEventListener('load', () => {
 			sb.html("<ol></ol>");
 			arr.sort(function(v1,v2){return ((v1.visitCount + v1.typedCount*2) - (v2.visitCount + v2.typedCount*2))});
       arr.forEach(function(v){
-				sb.children("ol").append("<li url='" + v.url + "' title='" + v.title +"'>" + nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>");
+				sb.children("ol").append("<li url='" + v.url + "' title='" + v.title +"'>" + popup_linking.nicefyURL(v.url) + " | " + v.title.substring(0,21) + "</li>");
 			});
 
       $("#search_suggestions > ol > li").click(function(){
         console.log("clicked");
         $(this).parent().children(".selected").removeClass("selected");
         $(this).addClass("selected");
-        confirmSuggestionItem();
+        popup_linking.confirmSuggestionItem();
       })
 
       console.log(sb.children("ol").children());
@@ -162,13 +131,13 @@ window.addEventListener('load', () => {
         // backspace = remove stuff
         if(e.keyCode === 8 || e.keyCode === 46){
           if(s.length === 0){
-            stopListening(t);
+            popup_linking.stopListening(t);
           }
           t.prop("search_value",s.substring(0	,s.length-1));
         }
       }
       else if(e.keyCode === 27){
-        stopListening(t);
+        popup_linking.stopListening(t);
       }
       else if(e.keyCode === 9){
         var temp = t.children("ol").children("li.selected").next();
@@ -185,20 +154,20 @@ window.addEventListener('load', () => {
 				// backspace = remove stuff
 				if(e.keyCode === 8 || e.keyCode === 46){
           if(s.length === 0){
-            stopListening(t);
+            popup_linking.stopListening(t);
             return;
           }
 					t.prop("search_value",s.substring(0	,s.length-1));
 				}
 				// enter = do it
 				else if(e.keyCode === 13){
-          confirmSuggestionItem();
+          popup_linking.confirmSuggestionItem();
           return;
 
 				}
 				// space, escape = abort
 				else if(e.keyCode === 32 || e.keyCode === 27){
-					stopListening(t);
+					popup_linking.stopListening(t);
           return;
 				}
 				// otherwise = add stuff
@@ -208,7 +177,7 @@ window.addEventListener('load', () => {
 			}
 			else if(e.keyCode === 37){
         $(".listening").removeClass("listening");
-				attachSuggestionBox(t);
+				popup_linking.attachSuggestionBox(t);
 				t.addClass("listening");
 				t.prop("search_value","");
 			}
