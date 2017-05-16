@@ -223,41 +223,43 @@ var handleReddit = () => {
   $("#modal-submit").click(doSubmitFastLinks);
 };
 
+var facebookPostBoxClickHandler = () => {
+  if (fast_linked) {
+    var text_span = document.querySelectorAll('[data-text="true"]')[0];
+    text_span.id = "to_highlight";
+    utility.selectText("to_highlight");
+  } else {
+    var post_button = document.querySelectorAll('[data-testid="react-composer-post-button"]')[0];
+    console.log("post_button");
+    console.log(post_button);
+    var parent_div = post_button.parentElement;
+    if (!document.getElementById("fastlinks")) {
+      var new_button = post_button.cloneNode(true);
+      var new_button_inner_span = new_button.getElementsByTagName("span")[0];
+      new_button_inner_span.innerHTML = "fastlink";
+      parent_div.appendChild(new_button);
+      new_button.id = "fastlinks";
+
+      new_button.onclick = function() {
+        console.log("Clicked! the fastlink button.");
+        var text_span = document.querySelectorAll('[data-text="true"]')[0];
+        text_span.innerHTML = nlpAnalyser.nlpDecorator(text_span.innerHTML, "facebook");
+        //text_span.innerHTML = "NOW PASTE HERE!";
+        text_span.id = 'to_highlight';
+
+        //console.log("COPIED!");
+        //utility.copyTextToClipboard(fast_linked);
+      }
+    }
+  }
+};
+
 var handleFacebook = () => {
   console.log("We're on Facebook.")
   var post_box = document.getElementById("composer_text_input_box");
   console.log(post_box);
 
-  post_box.onclick = function () {
-    if (fast_linked) {
-      var text_span = document.querySelectorAll('[data-text="true"]')[0];
-      text_span.id = "to_highlight";
-      utility.selectText("to_highlight");
-    } else {
-      var post_button = document.querySelectorAll('[data-testid="react-composer-post-button"]')[0];
-      console.log("post_button");
-      console.log(post_button);
-      var parent_div = post_button.parentElement;
-      if (!document.getElementById("fastlinks")) {
-        var new_button = post_button.cloneNode(true);
-        var new_button_inner_span = new_button.getElementsByTagName("span")[0];
-        new_button_inner_span.innerHTML = "fastlink";
-        parent_div.appendChild(new_button);
-        new_button.id = "fastlinks";
-
-        new_button.onclick = function() {
-          console.log("Clicked! the fastlink button.");
-          var text_span = document.querySelectorAll('[data-text="true"]')[0];
-          text_span.innerHTML = nlpAnalyser.nlpDecorator(text_span.innerHTML, "facebook");
-          //text_span.innerHTML = "NOW PASTE HERE!";
-          text_span.id = 'to_highlight';
-
-          //console.log("COPIED!");
-          //utility.copyTextToClipboard(fast_linked);
-        }
-      }
-    }
-  }
+  post_box.onclick = facebookPostBoxClickHandler;
 };
 
 window.addEventListener('load', () => {
