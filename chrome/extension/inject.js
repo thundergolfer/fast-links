@@ -90,6 +90,10 @@ window.addEventListener('load', () => {
       }
     });
 
+   /**
+    * You can't pull out this function it creates a ReferenceError in
+    * chrome.extension.onMessage.addListener()
+    */
 		function setSuggestionItems(arr){
       console.log(arr);
 			var sb = $("#search_suggestions");
