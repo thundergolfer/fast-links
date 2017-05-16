@@ -229,7 +229,6 @@ var handleFacebook = () => {
   console.log(post_box);
 
   post_box.onclick = function () {
-
     if (fast_linked) {
       var text_span = document.querySelectorAll('[data-text="true"]')[0];
       text_span.id = "to_highlight";
@@ -240,27 +239,16 @@ var handleFacebook = () => {
       console.log(post_button);
       var parent_div = post_button.parentElement;
       if (!document.getElementById("fastlinks")) {
-        console.log("element doesn't exist");
         var new_button = post_button.cloneNode(true);
-        console.log(new_button);
         var new_button_inner_span = new_button.getElementsByTagName("span")[0];
         new_button_inner_span.innerHTML = "fastlink";
-        console.log("new button");
-        console.log(new_button);
         parent_div.appendChild(new_button);
-
         new_button.id = "fastlinks";
-
 
         new_button.onclick = function() {
           console.log("Clicked! the fastlink button.");
-          // debugger;
-          console.log(post_box.textContent);
           var text_span = document.querySelectorAll('[data-text="true"]')[0];
-          console.log(text_span.innerHTML);
-
           text_span.innerHTML = nlpAnalyser.nlpDecorator(text_span.innerHTML, "facebook");
-          console.log(fast_linked);
           //text_span.innerHTML = "NOW PASTE HERE!";
           text_span.id = 'to_highlight';
 
