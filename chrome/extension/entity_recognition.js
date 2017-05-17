@@ -29,14 +29,14 @@ var facebookLinkInsert = (text, link_entity) => {
 };
 
 var redditLinkInsert = (text, link_entity) => {
-  return text.replace(new_entity.word, "[" + new_entity.word + "](" + new_entity.link + ")");
+  return text.replace(link_entity.word, "[" + link_entity.word + "](" + link_entity.link + ")");
 }
 
-var buildTextEntityFromGoogleNerEntity = entity => {
+var buildTextEntityFromGoogleNerEntity = (entity, index, text) => {
   return {
       link: entity.metadata.wikipedia_url,
       word: entity.name,
-      ref: i,
+      ref: index,
       start_pos: text.indexOf(entity.name) + entity.name.length
   }
 }
@@ -52,7 +52,7 @@ exports.nlpDecorator = function(text, platform) {
     entities.forEach(function(entity) {
         if (entity.hasOwnProperty("metadata")) {
             if (entity.metadata.hasOwnProperty("wikipedia_url")) {
-                var new_entity = buildTextEntityFromGoogleNerEntity(entity);
+                var new_entity = buildTextEntityFromGoogleNerEntity(entity, i, text);
                 // After producing the relevant information (inside new_entity), update the text based on the platform.
                 if (platform === "facebook") text = facebookLinkInsert(text, new_entity);
                 else if (platform === "reddit") text = redditLinkInsert(text, new_entity);
@@ -64,3 +64,6 @@ exports.nlpDecorator = function(text, platform) {
 
     return text;
 }
+
+module.exports.redditLinkInsert = redditLinkInsert;
+module.exports.facebookLinkInsert = facebookLinkInsert;
