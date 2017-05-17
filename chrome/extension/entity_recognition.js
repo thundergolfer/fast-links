@@ -17,6 +17,28 @@ var googleNER = (text, api_key) => {
   const entities = results.entities;
 
   return entities;
+};
+
+var facebookLinkInsert = (text, link_entity) => {
+  var new_entity = link_entity;
+  text = text.slice(0, new_entity.start_pos) + "(" + (new_entity.ref).toString() + ")" + text.slice(new_entity.start_pos, text.length);
+  text += "\n";
+  text += "(" + new_entity.ref + "): " + new_entity.word + " - " + new_entity.link;
+
+  return text;
+};
+
+var redditLinkInsert = (text, link_entity) => {
+  return text.replace(link_entity.word, "[" + link_entity.word + "](" + link_entity.link + ")");
+}
+
+var buildTextEntityFromGoogleNerEntity = (entity, index, text) => {
+  return {
+      link: entity.metadata.wikipedia_url,
+      word: entity.name,
+      ref: index,
+      start_pos: text.indexOf(entity.name) + entity.name.length
+  }
 }
 
 exports.nlpDecorator = function(text, platform) {
@@ -25,36 +47,23 @@ exports.nlpDecorator = function(text, platform) {
 
     var entities = googleNER(text, api_key);
 
-    var i = 1;
+    var i = 1; // becomes a footnote number if needed
 
-    // Loop through entities and parse Google's entity to extract relevant information.
     entities.forEach(function(entity) {
         if (entity.hasOwnProperty("metadata")) {
             if (entity.metadata.hasOwnProperty("wikipedia_url")) {
-
-                var new_entity = {
-                    link: entity.metadata.wikipedia_url,
-                    word: entity.name,
-                    ref: i,
-                    start_pos: text.indexOf(entity.name) + entity.name.length
-                }
-
+                var new_entity = buildTextEntityFromGoogleNerEntity(entity, i, text);
                 // After producing the relevant information (inside new_entity), update the text based on the platform.
-                if (platform === "facebook") {
-                    text = text.slice(0, new_entity.start_pos) + "(" + (new_entity.ref).toString() + ")" + text.slice(new_entity.start_pos, text.length - 1);
-                    text += "\n";
-                    text += "(" + new_entity.ref + "): " + new_entity.word + ": " + new_entity.link;
-
-                } else if (platform === "reddit") {
-                    text = text.replace(new_entity.word, "[" + new_entity.word + "](" + new_entity.link + ")");
-                }
+                if (platform === "facebook") text = facebookLinkInsert(text, new_entity);
+                else if (platform === "reddit") text = redditLinkInsert(text, new_entity);
 
                 i += 1;
             }
         }
     });
 
-    // Return decorated text.
     return text;
-
 }
+
+module.exports.redditLinkInsert = redditLinkInsert;
+module.exports.facebookLinkInsert = facebookLinkInsert;
