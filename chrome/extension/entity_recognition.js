@@ -21,9 +21,9 @@ var googleNER = (text, api_key) => {
 
 var facebookLinkInsert = (text, link_entity) => {
   var new_entity = link_entity;
-  text = text.slice(0, new_entity.start_pos) + "(" + (new_entity.ref).toString() + ")" + text.slice(new_entity.start_pos, text.length - 1);
+  text = text.slice(0, new_entity.start_pos) + "(" + (new_entity.ref).toString() + ")" + text.slice(new_entity.start_pos, text.length);
   text += "\n";
-  text += "(" + new_entity.ref + "): " + new_entity.word + ": " + new_entity.link;
+  text += "(" + new_entity.ref + "): " + new_entity.word + " - " + new_entity.link;
 
   return text;
 };
