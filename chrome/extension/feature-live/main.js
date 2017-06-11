@@ -46,5 +46,6 @@ exports.run = function(){
   inject_css();
   var suggestion_box = Suggestor.create();
   var text_listener = Listener.create();
-
+  $("body").click(Listener.reset());
+  $()
 }
