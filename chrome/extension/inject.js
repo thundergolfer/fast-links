@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Dock from 'react-dock';
+/************************************
+**        External Modules         **
+** TODO: Make the names of all     **
+** imported variables more consistent
+************************************/
 
-var $ = require('jquery');
-var jQuery = $;
-
-//import nlpDecorator from './entity_recognition';
+var jQuery,$ = require('jquery');
+// Utilities
+var place = require('./utilities/place.js');
 var nlpAnalyser = require('./entity_recognition');
 var utility = require('./utility');
 var popup_linking = require('./popup_linking');
 
+/************************************
+**             Tests               **
+** TODO: Add testing for more modules
+************************************/
+place.test();
+
+
+
+
+// TODO: Determine if we actually need this
 class InjectApp extends Component {
   constructor(props) {
     super(props);
@@ -46,11 +60,9 @@ class InjectApp extends Component {
     );
   }
 }
-
-console.log("Hello from inject.js");
-
+// TODO: Figure out if this can be removed (looks like example code)
 window.addEventListener('load', () => {
-  console.log("Adding Inject component");
+  console.log("Running/Loading FastLinks injector");
   const injectDOM = document.createElement('div');
   injectDOM.className = 'inject-react-example';
   injectDOM.style.textAlign = 'center';
@@ -58,15 +70,15 @@ window.addEventListener('load', () => {
   render(<InjectApp />, injectDOM);
 });
 
+// TODO: export to external module
 var introducePopupLinksCSS = () => {
   $("head").append("<style>ol > .selected{background-color:blue;color:white;cursor:pointer;}</style>")
   $("head").append("<style>#search_suggestions > ol >li:hover{background-color:lightblue;cursor:pointer;}</style>")
   $("head").append("<style>#search_suggestions > ol >li{white-space: nowrap;display:block;overflow: hidden;text-overflow: ellipsis;}</style>")
 }
-
+// TODO: export internal components to external module and simplify code
 var handleReddit = () => {
   introducePopupLinksCSS();
-
   popup_linking.createSuggestionBox();
 
   $("body").click(function(){
@@ -277,14 +289,12 @@ window.addEventListener('load', () => {
 
   var tab_url = window.location.href;
   console.log(tab_url);
-  if (allowedURLs.reddit.test(tab_url)) {
+  if (place.isReddit()){
     handleReddit();
-  } else if (allowedURLs.facebook.test(tab_url)) {
+  if (place.isFacebook()){
     handleFacebook();
   }
+  if(place.isDefault()){
+    // handleDefault();
+  }
 });
-
-// TEMP: This is my shit because my stuff is broken
-String.prototype.ellipse = String.prototype.ellipse || function(l){
-	return (this.length > l) ? this.substr(0, l-1).trim() + '&hellip;' : this;
-}
