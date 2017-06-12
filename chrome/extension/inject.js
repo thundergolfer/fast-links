@@ -9,14 +9,21 @@ import Dock from 'react-dock';
 
 var jQuery,$ = require('jquery');
 // Utilities
-var place = require('./utilities/place.js');
-var nlpAnalyser = require('./entity_recognition');
+var place = require('./utilities/place');
+var logging = require('./utilities/logging');
+// TODO: expand on this code and move to the utilities directory
 var utility = require('./utility');
+
+// Code to be exported as we move the platform specific code to external modules.
+var nlpAnalyser = require('./entity_recognition');
 var popup_linking = require('./popup_linking');
 
 /************************************
 **             Tests               **
 ** TODO: Add testing for more modules
+** TODO: Maybe add an if envirnonment
+** is not production don't print this
+** shit :)
 ************************************/
 place.test();
 
@@ -92,7 +99,8 @@ var handleReddit = () => {
   * chrome.extension.onMessage.addListener()
   */
   function setSuggestionItems(arr){
-    console.log(arr);
+    // Did I do this?, if so I apologise -Avrami
+    //console.log(arr);
     var sb = $("#search_suggestions");
 
     if(arr.length === 0){
@@ -114,8 +122,6 @@ var handleReddit = () => {
       $(this).addClass("selected");
       popup_linking.confirmSuggestionItem();
     })
-
-    console.log(sb.children("ol").children());
     sb.css("height", sb.children("ol").outerHeight());
     sb.children("ol").children("li").first().addClass("selected");
   }
@@ -194,7 +200,7 @@ var handleReddit = () => {
   /* Make is work on 'reply' boxes as well */
   var reply_buttons = document.getElementsByClassName('reply-button');
   for (var i = 0; i < reply_buttons.length; i++) {
-    console.log(reply_buttons[i]);
+    //console.log(reply_buttons[i]);
     reply_buttons[i].onclick = function() {
       var form = $(this).parent().parent().siblings().find('textarea').first();
       $(form).keyup(keyUpListener);
@@ -215,11 +221,6 @@ var handleReddit = () => {
     };
   }
 
-  var tab_url = window.location.href;
-  console.log(tab_url);
-
-
-  console.log("We're on Reddit");
   $("head").append("<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel= \"stylesheet\" integrity= \"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin= \"anonymous\" > ")
 
   $(".usertext-buttons").append("<a class='fastlink-btn btn btn-default' data-toggle='modal' data-target='#myModal'>FastLink</a>");
@@ -245,8 +246,10 @@ var facebookPostBoxClickHandler = () => {
     utility.selectText("to_highlight");
   } else {
     var post_button = document.querySelectorAll('[data-testid="react-composer-post-button"]')[0];
-    console.log("post_button");
-    console.log(post_button);
+    // Why did you do this to my console?
+    // try to remove debugging console.logs after you are done with them.
+    //console.log("post_button");
+    //console.log(post_button);
     var parent_div = post_button.parentElement;
     if (!document.getElementById("fastlinks")) {
       var new_button = post_button.cloneNode(true);
@@ -270,7 +273,6 @@ var facebookPostBoxClickHandler = () => {
 };
 
 var handleFacebook = () => {
-  console.log("We're on Facebook.")
   var post_box = document.getElementById("composer_text_input_box");
   console.log(post_box);
 
@@ -278,23 +280,15 @@ var handleFacebook = () => {
 };
 
 window.addEventListener('load', () => {
+  // This is never given a value?
   var fast_linked;
-
-  console.log("Executing block to handle comment intercept");
-
-  const allowedURLs = {
-                       reddit: /^https:\/\/www.reddit\.com/,
-                       facebook: /facebook\.com/
-                     };
-
-  var tab_url = window.location.href;
-  console.log(tab_url);
   if (place.isReddit()){
     handleReddit();
+  }
   if (place.isFacebook()){
     handleFacebook();
   }
-  if(place.isDefault()){
+  if (place.isDefault()){
     // handleDefault();
   }
 });
