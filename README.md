@@ -5,7 +5,7 @@
 
 # Fast Linking - Google Chrome Extension
 
-`Painlessly embed references into your online comments and posts`g
+`Painlessly embed references into your online comments and posts`
 
 -----
 
