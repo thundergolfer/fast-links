@@ -11,7 +11,7 @@
 
 ### Facebook Hackathon 2017:
 
-This project was worked on during a 24 hour Facebook regional hackathon and **earned 2nd Place**. The team consisted of [Avrami](https://github.com/Hammer-Inc), [Apoorv](https://github.com/akan57), [Abdullah](https://github.com/AbdullahShabbir), and [myself](https://github.com/thundergolfer).
+This project was worked on during a 24 hour Facebook regional hackathon and **earned 2nd Place** :2nd_place_medal:. The team consisted of [Avrami](https://github.com/Hammer-Inc), [Apoorv](https://github.com/akan57), [Abdullah](https://github.com/AbdullahShabbir), and [myself](https://github.com/thundergolfer).
 
 
 ------
