@@ -4,11 +4,11 @@
 /*
 Site CSS Selector Key:
 
-.md p a -> Reddit.com
+.usertext-body > .md > p > a -> Reddit.com
 
 */
 
-.md p a
+.thing .usertext-body > .md > p a
 {
   color: black !important;
   text-decoration: none;
@@ -16,7 +16,7 @@ Site CSS Selector Key:
   box-shadow: 0 -.4em 0 #b9f2ab inset;
 }
 
-.md p a:hover {
+.thing .usertext-body > .md > p a:hover {
   border-color: #aedbf9;
   box-shadow: 0 -.75em 0 #aedbf9 inset;
 }
